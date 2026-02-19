@@ -1,0 +1,44 @@
+# exit venv
+deactivate
+
+# delete venv
+rm -rf venv
+
+# create venv
+python3 -m venv venv
+
+# activate venv
+source venv/bin/activate
+
+# verify
+which python
+pip --version
+
+
+#TO RUN BACKEND
+From backend/ directory:
+uvicorn app.main:app --reload
+
+#Proper Structure for backend
+
+ls app/main.py
+grep "FastAPI" app/main.py
+grep "app =" app/main.py
+
+
+database.py
+→ defines engine, SessionLocal, Base, get_db
+
+models.py
+→ imports Base from database
+→ defines Task model
+
+routes.py
+→ imports models
+→ imports get_db
+
+main.py
+→ imports models
+→ imports router
+
+NO circular cross imports.

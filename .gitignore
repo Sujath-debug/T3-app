@@ -8,3 +8,11 @@ node_modules/
 *.zip
 *.tar.gz
 .env
+venv/
+env/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python

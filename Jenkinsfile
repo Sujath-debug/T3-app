@@ -22,10 +22,20 @@ pipeline {
         stage('Security Scan') {
             steps {
                 sh '''
-                snyk test --severity-threshold=high
-                '''
+snyk test backend --file=backend/requirements.txt --severity-threshold=high                '''
+snyk test backend --file=backend/package-lock.json --severity-threshold=high                '''
+snyk test backend --file=backend/package.json --severity-threshold=high                '''
+
+
             }
         }
+        stage('Docker Security Scan') {
+    steps {
+        sh '''
+        snyk test --docker Dockerfile --severity-threshold=high
+        '''
+    }
+}
 
         stage('Test') {
             steps {

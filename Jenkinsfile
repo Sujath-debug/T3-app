@@ -16,17 +16,21 @@ pipeline {
         }
 
         stage('Security Scan') {
-            steps {
-                sh 'echo Running security scan'
-            }
-        }
+    steps {
+        sh 'trivy fs .'
+    }
+}
 
         stage('Test') {
             steps {
                 sh 'echo Running tests'
             }
         }
-
+stage('Approval') {
+    steps {
+        input message: 'Approve production deployment?'
+    }
+}
         stage('Deploy') {
             when {
                 branch 'main'
@@ -35,5 +39,10 @@ pipeline {
                 echo 'Deploying to production'
             }
         }
+    }
+}
+stage('Approval') {
+    steps {
+        input message: 'Approve production deployment?'
     }
 }

@@ -19,16 +19,17 @@ pipeline {
             }
         }
 
-        stage('Security Scan') {
-            steps {
-                sh '''
-snyk test backend --file=backend/requirements.txt --severity-threshold=high                '''
-snyk test backend --file=backend/package-lock.json --severity-threshold=high                '''
-snyk test backend --file=backend/package.json --severity-threshold=high                '''
+      stage('Security Scan') {
+    steps {
+        sh '''
+        echo "Scanning Python dependencies..."
+        snyk test --file=backend/requirements.txt --severity-threshold=high
 
-
-            }
-        }
+        echo "Scanning Node dependencies..."
+        snyk test --file=backend/package.json --severity-threshold=high
+        '''
+    }
+}
         stage('Docker Security Scan') {
     steps {
         sh '''

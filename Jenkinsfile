@@ -14,13 +14,20 @@ pipeline {
                 sh 'echo Building application'
             }
         }
-
-        stage('Security Scan') {
+stage('Security Scan') {
+    environment {
+        SNYK_TOKEN = credentials('snyk_token')
+    }
     steps {
-        sh 'trivy fs .'
+        sh '''
+        docker run --rm \
+          -e SNYK_TOKEN=$SNYK_TOKEN \
+          -v "$PWD:/project" \
+          -w /project \
+          snyk/snyk:docker snyk test --severity-threshold=high
+        '''
     }
 }
-
         stage('Test') {
             steps {
                 sh 'echo Running tests'

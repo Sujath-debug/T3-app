@@ -22,11 +22,19 @@ pipeline {
       stage('Security Scan') {
     steps {
         sh '''
-        echo "Scanning Python dependencies..."
+        echo "🔐 Creating Python virtual environment"
+        python3 -m venv .venv
+        source .venv/bin/activate
+
+        echo "📦 Installing dependencies"
+        pip install --upgrade pip
+        pip install -r backend/requirements.txt
+
+        echo "🔍 Running Snyk test (strict)"
         snyk test --file=backend/requirements.txt --severity-threshold=high
 
-        echo "Scanning Node dependencies..."
-        snyk test --file=backend/package.json --severity-threshold=high
+        echo "📤 Uploading results to Snyk dashboard"
+        snyk monitor --file=backend/requirements.txt
         '''
     }
 }

@@ -14,34 +14,45 @@ pipeline {
         }
 
         stage('Build') {
-            steps {
-                sh 'echo Building application'
-            }
-        }
+    steps {
+        sh '''
+        echo "🔧 Setting up Python environment"
+        python3 -m venv .venv
+        source .venv/bin/activate
+
+        pip install --upgrade pip
+        pip install -r backend/requirements.txt
+
+        echo "Build completed"
+        '''
+    }
+}
 
       stage('Security Scan') {
     steps {
         sh '''
-        echo "🔐 Creating Python virtual environment"
-        python3 -m venv .venv
         source .venv/bin/activate
 
-        echo "📦 Installing dependencies"
-        pip install --upgrade pip
-        pip install -r backend/requirements.txt
-
-        echo "🔍 Running Snyk test (strict)"
+        echo "🔍 Python: Snyk strict test"
         snyk test --file=backend/requirements.txt --severity-threshold=high
 
-        echo "📤 Uploading results to Snyk dashboard"
+        echo "📤 Python: upload to Snyk dashboard"
         snyk monitor --file=backend/requirements.txt
+
+        echo "🔍 Node.js: Snyk strict test"
+        snyk test --file=backend/package.json --severity-threshold=high
+
+        echo "📤 Node.js: upload to Snyk dashboard"
+        snyk monitor --file=backend/package.json
         '''
     }
 }
-        stage('Docker Security Scan') {
+       stage('IaC Security Scan (Dockerfile)') {
     steps {
         sh '''
-        snyk test --docker Dockerfile --severity-threshold=high
+        echo "🔍 Scanning Dockerfile as Infrastructure-as-Code"
+        snyk iac test Dockerfile --severity-threshold=high
+        snyk iac monitor Dockerfile
         '''
     }
 }

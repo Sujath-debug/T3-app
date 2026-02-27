@@ -4,7 +4,7 @@ pipeline {
             stage ('print Bismillah') {
                 steps {
                     echo 'Iam testing the connection'
-                    sh 'whomai'
+                    sh 'whoami'
                     sh 'pwd'
                  }
              }

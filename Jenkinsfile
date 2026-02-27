@@ -1,12 +1,12 @@
 pipeline {
     agent any 
-        stages (
+        stages {
             stage ('print Bismillah') {
                 steps {
                     echo 'Iam testing the connection'
                     sh 'whomai'
                     sh 'pwd'
-                }
-         }
-     }           
+                 }
+             }
+          }           
 }        

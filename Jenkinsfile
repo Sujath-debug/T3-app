@@ -1,11 +1,12 @@
 pipeline {
     agent any 
         stages {
-            stage ('build') {
+            stage ('Install Python Dependencies') {
                 steps {
-                    echo 'Getting Dependeicies'
+                    echo 'setting up python environment'
                     dir ('backend') {
-                                sh 'pip3 install --user -r requirements.txt'
+                                sh 'python3 -m venv venv'
+                                sh '. venv/bin/activate && pip install -r requirements.txt'
                  }
              }
             

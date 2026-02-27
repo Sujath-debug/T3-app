@@ -14,9 +14,9 @@ pipeline {
         
                 }
             }
-            stage ('Check Backend Folder')
+            stage ('Check Backend Folder') {
              steps { 
-                 echo 'Check the content of Backend Folder' {
+                 echo 'Check the content of Backend Folder' 
                  sh  'ls -la backend/'
 
                  }

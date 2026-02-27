@@ -8,5 +8,10 @@ pipeline {
                     sh 'pwd'
                  }
              }
+            stage ('List workspace Files') {
+                steps {
+                    sh 'ls -la'
+                }
+            }
           }           
 }        
